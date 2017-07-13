@@ -9,6 +9,23 @@ public class GameOfLife {
 	private int rows;
 	private int columns;
 
+	public void play() {
+		GameOfLife gameOfLife = new GameOfLife();
+		gameOfLife.startGameOfLife();
+	}
+	
+	public int validateStringAndGetInt(KeyboardListener keyboardListener){
+		String rowOrColumnString;
+		do {
+			rowOrColumnString = keyboardListener.getInput();
+			if(checkRegex(rowOrColumnString)!=true){
+				PrintUtility.printStatementForBadInsertedValue();
+			}
+			
+		} while (checkRegex(rowOrColumnString) != true);
+		return Integer.parseInt(rowOrColumnString);
+	}
+	
 	private void startGameOfLife() {
 		askForRowsAndColumns();
 		GameService gameService= new GameService(new BoardOfCells(rows, columns));
@@ -31,25 +48,9 @@ public class GameOfLife {
 		this.rows = validateStringAndGetInt(keyboardListener);
 	}
 	
-	public int validateStringAndGetInt(KeyboardListener keyboardListener){
-		String rowOrColumnString;
-		do {
-			rowOrColumnString = keyboardListener.getInput();
-			if(checkRegex(rowOrColumnString)!=true){
-				PrintUtility.printStatementForBadInsertedValue();
-			}
-
-		} while (checkRegex(rowOrColumnString) != true);
-		return Integer.parseInt(rowOrColumnString);
-	}
-
 	private boolean checkRegex(String rowString) {
 		Matcher matcher = inputPattern.matcher(rowString);
 		return matcher.matches();
 	}
 
-	public void play() {
-		GameOfLife gameOfLife = new GameOfLife();
-		gameOfLife.startGameOfLife();
-	}
 }

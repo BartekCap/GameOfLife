@@ -106,63 +106,21 @@ public class GameService {
 	}
 
 	private void checkNeighborStateAndConcatenateNumberOfAliveNeighbors(int checkingRow, int checkingColumn) {
-		if (checkingRow == 0 && checkingColumn == 0) {
-			concatenateNumberOfAliveNeighbors(0, 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(1, 0, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(1, 1, checkingRow, checkingColumn);
-		} else if (checkingRow == rows - 1 && checkingColumn == columns - 1) {
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow, checkingColumn - 1, checkingRow, checkingColumn);
-		} else if (checkingRow == 0 && checkingColumn == columns - 1) {
-			concatenateNumberOfAliveNeighbors(1, checkingColumn, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(1, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(0, checkingColumn - 1, checkingRow, checkingColumn);
-		} else if (checkingRow == rows - 1 && checkingColumn == 0) {
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, 0, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow, 1, checkingRow, checkingColumn);
-		} else if (checkingColumn == 0) {
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, 0, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow, 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow + 1, 0, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow + 1, 1, checkingRow, checkingColumn);
-		} else if (checkingColumn == columns - 1) {
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow + 1, checkingColumn, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow + 1, checkingColumn - 1, checkingRow, checkingColumn);
-		} else if (checkingRow == 0) {
-			concatenateNumberOfAliveNeighbors(0, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(0, checkingColumn + 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(1, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(1, checkingColumn, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(1, checkingColumn + 1, checkingRow, checkingColumn);
-		} else if (checkingRow == rows - 1) {
-			concatenateNumberOfAliveNeighbors(checkingRow, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow, checkingColumn + 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn + 1, checkingRow, checkingColumn);
-		} else {
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow - 1, checkingColumn + 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow, checkingColumn + 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow + 1, checkingColumn - 1, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow + 1, checkingColumn, checkingRow, checkingColumn);
-			concatenateNumberOfAliveNeighbors(checkingRow + 1, checkingColumn + 1, checkingRow, checkingColumn);
+		for(int iteratorRow = -1; iteratorRow<2; iteratorRow++){
+			for(int iteratorColumn = -1; iteratorColumn<2; iteratorColumn++){
+				try{concatenateNumberOfAliveNeighbors(checkingRow, checkingColumn, iteratorRow, iteratorColumn);}
+				catch(ArrayIndexOutOfBoundsException ex){}
+			}
+		}
+		if(cellsArray[checkingRow][checkingColumn].getState()){
+			cellsArray[checkingRow][checkingColumn].setNumberOfAliveNeighbors(cellsArray[checkingRow][checkingColumn].getNumberOfAliveNeighbors()-1);
 		}
 	}
 
-	private void concatenateNumberOfAliveNeighbors(int neighborsRow, int neighborsColumn, int concatenatingCellRow,
-			int concatenatingCellColumn) {
-		if (cellsArray[neighborsRow][neighborsColumn].getState()) {
-			cellsArray[concatenatingCellRow][concatenatingCellColumn].setNumberOfAliveNeighbors(
-					cellsArray[concatenatingCellRow][concatenatingCellColumn].getNumberOfAliveNeighbors() + 1);
+	private void concatenateNumberOfAliveNeighbors(int checkingRow, int checkingColumn, int iteratorRow,
+			int iteratorColumn) {
+		if(cellsArray[checkingRow-iteratorRow][checkingColumn-iteratorColumn].getState()){
+			cellsArray[checkingRow][checkingColumn].setNumberOfAliveNeighbors(cellsArray[checkingRow][checkingColumn].getNumberOfAliveNeighbors()+1);
 		}
 	}
 
